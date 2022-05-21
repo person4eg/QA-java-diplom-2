@@ -12,15 +12,12 @@ import static request.UserRequest.registrationUser;
 
 public class UserRegistrationTest {
 
-    String email = "person4eg@mail.ru";
-    String password = "123456";
-    String name = "person4eg";
     String token;
 
     @Test
     @DisplayName("Проверка регистрации нового пользователя")
     public void registrationUserTest() {
-        UserData userData = new UserData(email, password, name);
+        UserData userData = new UserData("person4eg@mail.ru", "123456", "person4eg");
         Response response = registrationUser(userData);
         response.then()
                 .assertThat()
@@ -33,7 +30,7 @@ public class UserRegistrationTest {
     @Test
     @DisplayName("Проверка регистрации существующего пользователя")
     public void registrationSameUserTest() {
-        UserData userData = new UserData(email, password, name);
+        UserData userData = new UserData("person4eg@mail.ru", "123456", "person4eg");
         token = registrationUser(userData).then().extract().path("accessToken");
 
         Response response = registrationUser(userData);
@@ -46,8 +43,8 @@ public class UserRegistrationTest {
     @DisplayName("Проверка регистрации пользователя без email")
     public void registrationUserWithoutEmailTest() {
         UserData userData = new UserData();
-        userData.setEmail(password);
-        userData.setName(name);
+        userData.setEmail("123456");
+        userData.setName("person4eg");
         Response response = registrationUser(userData);
         response.then()
                 .assertThat()
@@ -60,8 +57,8 @@ public class UserRegistrationTest {
     @DisplayName("Проверка регистрации пользователя без password")
     public void registrationUserWithoutPasswordTest() {
         UserData userData = new UserData();
-        userData.setEmail(email);
-        userData.setName(name);
+        userData.setEmail("person4eg@mail.ru");
+        userData.setName("person4eg");
         Response response = registrationUser(userData);
         response.then()
                 .assertThat()
@@ -74,8 +71,8 @@ public class UserRegistrationTest {
     @DisplayName("Проверка регистрации пользователя без name")
     public void registrationUserWithoutNameTest() {
         UserData userData = new UserData();
-        userData.setEmail(email);
-        userData.setName(password);
+        userData.setEmail("person4eg@mail.ru");
+        userData.setName("123456");
         Response response = registrationUser(userData);
         response.then()
                 .assertThat()

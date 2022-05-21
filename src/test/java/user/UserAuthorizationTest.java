@@ -11,18 +11,15 @@ import static request.UserRequest.*;
 
 public class UserAuthorizationTest {
 
-    String email = "person4eg@mail.ru";
-    String password = "123456";
-    String name = "person4eg";
     String token;
 
     @Test
     @DisplayName("Проверка авторизации зарегистрированного пользователя")
     public void registrationUserTest() {
-        UserData userData = new UserData(email, password, name);
+        UserData userData = new UserData("person4eg@mail.ru", "123456", "person4eg");
         registrationUser(userData).then().statusCode(200);
 
-        Response response = authorizationUser(new UserData(email, password));
+        Response response = authorizationUser(new UserData("person4eg@mail.ru", "123456"));
         response.then()
                 .assertThat()
                 .body("success", equalTo(true))

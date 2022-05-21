@@ -11,28 +11,22 @@ import static request.UserRequest.*;
 
 public class UpdateUserDataTest {
 
-    String email = "person4eg@mail.ru";
-    String password = "123456";
-    String name = "person4eg";
-    String newEmail = "newPerson4eg@mail.ru";
-    String newPassword = "new123456";
-    String newName = "newPerson4eg";
     String token;
 
     @Test
     @DisplayName("Проверка измененния данных авторизованного пользователя")
     public void updateUserWithAuthorizationTest() {
-        UserData userData = new UserData(email, password, name);
+        UserData userData = new UserData("person4eg@mail.ru", "123456", "person4eg");
         registrationUser(userData).then().statusCode(200);
-        token = authorizationUser(new UserData(email, password)).then().extract().path("accessToken");
+        token = authorizationUser(new UserData("person4eg@mail.ru", "123456")).then().extract().path("accessToken");
 
-        Response response = updateUserData(new UserData(newEmail, newPassword, newName), token);
+        Response response = updateUserData(new UserData("newPerson4eg@mail.ru", "new123456", "newPerson4eg"), token);
         response.then()
                 .assertThat()
                 .body("success", equalTo(true))
                 .statusCode(200);
 
-        authorizationUser(new UserData(newEmail, newPassword)).then()
+        authorizationUser(new UserData("newPerson4eg@mail.ru", "new123456")).then()
                 .assertThat()
                 .body("success", equalTo(true))
                 .statusCode(200);
@@ -41,7 +35,7 @@ public class UpdateUserDataTest {
     @DisplayName("Проверка измененния данных неавторизиронного пользователя")
     public void updateUserWithoutAuthorizationTest() {
 
-        Response response = updateUserData(new UserData(newEmail, newPassword, newName));
+        Response response = updateUserData(new UserData(null, null, null));
         response.then()
                 .assertThat()
                 .body("success", equalTo(false))

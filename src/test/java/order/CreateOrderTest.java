@@ -18,9 +18,6 @@ import static request.UserRequest.*;
 
 public class CreateOrderTest {
 
-    String email = "person4eg@mail.ru";
-    String password = "123456";
-    String name = "person4eg";
     String token;
 
     @Test
@@ -77,9 +74,9 @@ public class CreateOrderTest {
     }
 
     private void authorize() {
-        UserData userData = new UserData(email, password, name);
+        UserData userData = new UserData("person4eg@mail.ru", "123456", "person4eg");
         registrationUser(userData).then().statusCode(200);
-        Response authorization = authorizationUser(new UserData(email, password));
+        Response authorization = authorizationUser(new UserData("person4eg@mail.ru", "123456"));
         token = authorization.then().extract().path("accessToken");
         authorization.then().statusCode(200);
     }
